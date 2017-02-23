@@ -35,11 +35,13 @@ void loop() {
   tempCtrl(); //temperature control
 
   Serial.print("h:"); Serial.print(hVal); Serial.print(" c:"); Serial.println(cVal);
-  //Serial.println(hVal);
+ // Serial.println(hDelay);
 }
 
 void tempCtrl() {
-  if (digitalRead(hAddPin) == HIGH) {
+ 
+  if (digitalRead(hAddPin) == HIGH ) {
+
     hVal = hVal + 0.01;
     if (hVal >= 1) {
       hVal = 1;
@@ -48,14 +50,14 @@ void tempCtrl() {
       delay(10);
       ledCtrl(100, hLedPin);  //miganie ze max
     }
-    delay(100);
+   delay(80);
   }
   if (digitalRead(hSubPin) == HIGH) {
     hVal = hVal - 0.01;
     if (hVal <= 0) {
       hVal = 0;
     }
-    delay(100);
+    delay(80);
   }
 
   if (digitalRead(cAddPin) == HIGH) {
@@ -63,7 +65,7 @@ void tempCtrl() {
     if (cVal >= 1) {
       cVal = 1;
 
-      
+
       ledCtrl(0, cLedPin);  //miganie ze max
       delay(10);
       ledCtrl(100, cLedPin);  //miganie ze max
