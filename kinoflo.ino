@@ -56,8 +56,8 @@ void tempCtrl() {
 
   if (digitalRead(cAddPin) == HIGH) {
     cVal = cVal + 0.01;
-    if (hVal >= 1) {
-      hVal = 1;
+    if (cVal >= 1) {
+      cVal = 1;
     }
     delay(100);
   }
