@@ -1,38 +1,61 @@
 int hLedPin = 9;
 int cLedPin = 10;
 
-int hAddPin = 8; int hSubPin = 7;// piny dla hot plus i minius
-int cAddPin = 6; int cSubPin = 5;// piny dla cold plus i minius
+int briAddPin = 8; int briSubPin = 7;// brightness + / -  pins
+int brightness = 0;
 
 int fullPin = 4;
 
-int hVal = 10;  //initial h/c values
-int cVal = 10;
+int hVal = 1;  //initial h/c values
+int cVal = 1;
 void setup() {
   Serial.begin(9600);
   pinMode(hLedPin, OUTPUT);
   pinMode(cLedPin, OUTPUT);
-  pinMode(hAddPin, INPUT); pinMode(hSubPin, INPUT);
-  pinMode(cAddPin, INPUT); pinMode(cSubPin, INPUT);
+  pinMode(briAddPin, INPUT); pinMode(briSubPin, INPUT);
 
   pinMode(fullPin, INPUT);
 }
 
 void loop() {
-  int full = digitalRead(fullPin);
-  
+  int full = digitalRead(fullPin); // jak sie zewrze to swiecimy na 100%
+
   if (full == LOW) {
-    ledCtrl(hVal, hLedPin);
-    ledCtrl(cVal, cLedPin);
-  //  Serial.println("h "+hVal+" c "+cVal);
+    ledCtrl(hVal * brightness, hLedPin);
+    ledCtrl(cVal * brightness, cLedPin);
+    //  Serial.println("h "+hVal+" c "+cVal);
+  }
+  if (full == HIGH) {
+    ledCtrl(100, hLedPin);
+    ledCtrl(100, cLedPin);
+  }
+  
+briCtrl();
+
+// Serial.print("+:"); Serial.print(digitalRead(briAddPin)); Serial.print(" -:"); Serial.println(digitalRead(briSubPin));
+Serial.println(brightness);
+}
+
+void briCtrl(){
+  if (digitalRead(briAddPin) == HIGH) {
+    brightness = brightness + 1;
+    if (brightness >= 100) {
+      brightness = 100;
     }
+    delay(100);
+  }
+  if (digitalRead(briSubPin) == HIGH) {
+    brightness = brightness - 1;
+    if (brightness <= 0) {
+      brightness = 0;
+    }
+    delay(100);
+  }
 
 }
 
-
-
 void ledCtrl(int val, int lPin) {
-  analogWrite(lPin, linearPWM(val));  // val range: [0;100] 
+  analogWrite(lPin, linearPWM(val));  // val range: [0;100]
 }
 
 int linearPWM(int percentage) {
