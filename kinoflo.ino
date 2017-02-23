@@ -1,8 +1,8 @@
 int hLedPin = 9;
 int cLedPin = 10;
 
-int briAddPin = 8; int briSubPin = 7;// brightness + / -  pins
-int brightness = 0;
+int hAddPin = 8; int cSubPin = 7;// hot led + / -  pins
+int brightness = 100;
 
 int fullPin = 4;
 
@@ -12,7 +12,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(hLedPin, OUTPUT);
   pinMode(cLedPin, OUTPUT);
-  pinMode(briAddPin, INPUT); pinMode(briSubPin, INPUT);
+  pinMode(hAddPin, INPUT); pinMode(cSubPin, INPUT);
 
   pinMode(fullPin, INPUT);
 }
@@ -30,24 +30,24 @@ void loop() {
     ledCtrl(100, cLedPin);
   }
   
-briCtrl();
+briCtrl(); //brigthness control
 
 // Serial.print("+:"); Serial.print(digitalRead(briAddPin)); Serial.print(" -:"); Serial.println(digitalRead(briSubPin));
 Serial.println(brightness);
 }
 
 void briCtrl(){
-  if (digitalRead(briAddPin) == HIGH) {
-    brightness = brightness + 1;
-    if (brightness >= 100) {
-      brightness = 100;
+  if (digitalRead(hAddPin) == HIGH) {
+    hVal = hVal + 1;
+    if (hVal >= 100) {
+      hVal = 100;
     }
     delay(100);
   }
-  if (digitalRead(briSubPin) == HIGH) {
-    brightness = brightness - 1;
-    if (brightness <= 0) {
-      brightness = 0;
+  if (digitalRead(hSubPin) == HIGH) {
+    hVal = hVal - 1;
+    if (hVal <= 0) {
+      hVal = 0;
     }
     delay(100);
   }
