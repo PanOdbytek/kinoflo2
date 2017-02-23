@@ -25,8 +25,8 @@ void loop() {
   if (full == LOW) {
     ledCtrl(hVal * brightness, hLedPin);
     ledCtrl(cVal * brightness, cLedPin);
-    //  Serial.println("h "+hVal+" c "+cVal);
   }
+
   if (full == HIGH) {
     ledCtrl(100, hLedPin);
     ledCtrl(100, cLedPin);
@@ -35,11 +35,28 @@ void loop() {
   tempCtrl(); //temperature control
 
   Serial.print("h:"); Serial.print(hVal); Serial.print(" c:"); Serial.println(cVal);
- // Serial.println(hDelay);
+  // Serial.println(hDelay);
 }
 
 void tempCtrl() {
- 
+  if (digitalRead(hAddPin) == HIGH && digitalRead(cAddPin) == HIGH) {
+    hVal = 1;
+    cVal = 1;
+  }
+  if (digitalRead(cSubPin) == HIGH && digitalRead(cSubPin) == HIGH) {
+    hVal = 0.1;
+    cVal = 0.1;
+  }
+  if (digitalRead(hAddPin) == HIGH && digitalRead(hSubPin) == HIGH) {
+    hVal = 1;
+    cVal = 0;
+  }
+  if (digitalRead(cAddPin) == HIGH && digitalRead(cSubPin) == HIGH) {
+    hVal = 0;
+    cVal = 1;
+  }
+
+
   if (digitalRead(hAddPin) == HIGH ) {
 
     hVal = hVal + 0.01;
@@ -50,7 +67,7 @@ void tempCtrl() {
       delay(10);
       ledCtrl(100, hLedPin);  //miganie ze max
     }
-   delay(80);
+    delay(80);
   }
   if (digitalRead(hSubPin) == HIGH) {
     hVal = hVal - 0.01;
