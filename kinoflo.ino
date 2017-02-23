@@ -7,8 +7,8 @@ int brightness = 100;
 
 int fullPin = 4;
 
-float hVal = 1;  //initial h/c values
-float cVal = 1;
+float hVal = 0.1;  //initial h/c values
+float cVal = 0.1;
 void setup() {
   Serial.begin(9600);
   pinMode(hLedPin, OUTPUT);
@@ -43,6 +43,10 @@ void tempCtrl() {
     hVal = hVal + 0.01;
     if (hVal >= 1) {
       hVal = 1;
+
+      ledCtrl(0, hLedPin);  //miganie ze max
+      delay(10);
+      ledCtrl(100, hLedPin);  //miganie ze max
     }
     delay(100);
   }
@@ -58,6 +62,11 @@ void tempCtrl() {
     cVal = cVal + 0.01;
     if (cVal >= 1) {
       cVal = 1;
+
+      
+      ledCtrl(0, cLedPin);  //miganie ze max
+      delay(10);
+      ledCtrl(100, cLedPin);  //miganie ze max
     }
     delay(100);
   }
