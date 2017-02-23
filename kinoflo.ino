@@ -1,18 +1,20 @@
 int hLedPin = 9;
 int cLedPin = 10;
 
-int hAddPin = 8; int cSubPin = 7;// hot led + / -  pins
+int hAddPin = 8; int hSubPin = 7;// hot led + / -  pins
+int cAddPin = 5; int cSubPin = 6;// hot led + / -  pins
 int brightness = 100;
 
 int fullPin = 4;
 
-int hVal = 1;  //initial h/c values
-int cVal = 1;
+float hVal = 1;  //initial h/c values
+float cVal = 1;
 void setup() {
   Serial.begin(9600);
   pinMode(hLedPin, OUTPUT);
   pinMode(cLedPin, OUTPUT);
-  pinMode(hAddPin, INPUT); pinMode(cSubPin, INPUT);
+  pinMode(hAddPin, INPUT); pinMode(hSubPin, INPUT);
+  pinMode(cAddPin, INPUT); pinMode(cSubPin, INPUT);
 
   pinMode(fullPin, INPUT);
 }
@@ -29,29 +31,43 @@ void loop() {
     ledCtrl(100, hLedPin);
     ledCtrl(100, cLedPin);
   }
-  
-briCtrl(); //brigthness control
 
-// Serial.print("+:"); Serial.print(digitalRead(briAddPin)); Serial.print(" -:"); Serial.println(digitalRead(briSubPin));
-Serial.println(brightness);
+  tempCtrl(); //temperature control
+
+  Serial.print("h:"); Serial.print(hVal); Serial.print(" c:"); Serial.println(cVal);
+  //Serial.println(hVal);
 }
 
-void briCtrl(){
+void tempCtrl() {
   if (digitalRead(hAddPin) == HIGH) {
-    hVal = hVal + 1;
-    if (hVal >= 100) {
-      hVal = 100;
+    hVal = hVal + 0.01;
+    if (hVal >= 1) {
+      hVal = 1;
     }
     delay(100);
   }
   if (digitalRead(hSubPin) == HIGH) {
-    hVal = hVal - 1;
+    hVal = hVal - 0.01;
     if (hVal <= 0) {
       hVal = 0;
     }
     delay(100);
   }
 
+  if (digitalRead(cAddPin) == HIGH) {
+    cVal = cVal + 0.01;
+    if (hVal >= 1) {
+      hVal = 1;
+    }
+    delay(100);
+  }
+  if (digitalRead(cSubPin) == HIGH) {
+    cVal = cVal - 0.01;
+    if (cVal <= 0) {
+      cVal = 0;
+    }
+    delay(100);
+  }
 }
 
 void ledCtrl(int val, int lPin) {
